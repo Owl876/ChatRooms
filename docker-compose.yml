@@ -1,0 +1,66 @@
+services:
+  web:
+    # Директория с файлами, из которых собирается контейнер
+    build: website
+    # Имя контейнера в докере
+    container_name: website
+    # Сеть для общения контейнеров
+    networks:
+      - app-network
+    # Окружение внутри контейнера
+    environment:
+      # Подключение к БД
+      DATABASE_URL: "postgresql://web_user:password@db/web_database"
+    # Запуск после контейнера db
+    depends_on:
+      - db
+
+  chat:
+    build: ./chat
+    container_name: chat_service
+    networks:
+      - app-network
+    environment:
+      DATABASE_URL: "postgresql://chat_user:password@db/chat_database"
+    depends_on:
+      - db
+
+  db:
+    # Используем готовый образ PostgreSQL 14
+    image: postgres:14
+    container_name: db
+    environment:
+      POSTGRES_USER: web_user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: web_database
+    # Создаем сохраняемое (персистентное) хранилище данных
+    # Монтируем локальную директорию в папку в контейнере
+    volumes:
+      - ./db/dump:/var/lib/postgresql/data  
+    networks:
+      - app-network
+
+  nginx:
+    build: nginx
+    container_name: nginx
+    # Единственный порт, доступный наружу
+    ports:
+      - "80:80" 
+    networks:
+      - app-network
+    depends_on:
+      - web
+      - chat
+    volumes:
+      - ./nginx/logs:/var/log/nginx
+
+# Сеть для общения контейнеров внутри сети
+networks:
+  app-network:
+    driver: bridge
+
+# Указываем, что dump - постоянное хранилище, 
+# Указываем, что хранилище было создано внутри docker-compose, в случае отсутствия, докер установит это хранилище
+volumes:
+  dump:
+    external: false

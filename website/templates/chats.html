@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление чатами</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            margin: 0;
+            height: 100vh;
+            box-sizing: border-box; /* Ширина и высота элемента включает в себя содрежимое и границы */
+        }
+
+        .main-container {
+            display: flex;
+            gap: 20px; /* Расстояние между блоками в контейнере */
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .left-container, .right-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 50%;
+        }
+
+        .right-container {
+            flex-grow: 1; /* элемент может занять все пространство в контейнере */
+            max-width: 50%;
+        }
+
+        .form-container {
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        ul {
+            list-style-type: none; /* Удаление маркеров списка */
+            padding: 0; /* Удаление внутренних отступов элемента */
+        }
+
+        li {
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .btn-chat {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .btn-chat:hover {
+            background-color: #45a049;
+        }
+
+        .btn-delete {
+            background-color: #f44336;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .btn-delete:hover {
+            background-color: #e53935;
+        }
+
+        .message {
+            text-align: center;
+            color: red;
+            margin-bottom: 20px;
+        }
+    </style>
+    <script>
+        async function getTokenAndRedirect(chatName) {
+            try {
+                const response = await fetch('/get_token_for_chat/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ "chat_name": chatName }),
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    const token = data.access_token;
+                    localStorage.setItem("token", token);
+                    window.location.href = "/meeting_room/";
+                } else {
+                    console.error('Error getting token:', data.detail);
+                }
+            } catch (error) {
+                console.error('Request failed', error);
+            }
+        }
+
+        async function deleteChat(chatName) {
+            const confirmed = confirm("Вы уверены, что хотите удалить этот чат?");
+            if (!confirmed) return;
+
+            const response = await fetch(`/chats/${chatName}`, {
+                method: "DELETE"
+            });
+
+            if (response.ok) {
+                document.getElementById(`chat-${chatName}`).remove();
+                document.getElementById(`button1-${chatName}`).remove();
+                document.getElementById(`button2-${chatName}`).remove();
+            } else {
+                alert("Ошибка при удалении чата");
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="main-container">
+        <div class="left-container">
+            <div class="form-container">
+                <form action="/search/" method="get">
+                    <h1>Найти чат по названию</h1>
+                    <label for="search">Поиск чата:</label>
+                    <input type="text" id="search" name="query" placeholder="Введите название чата для поиска" required>
+                    <button type="submit">Найти</button>
+                </form>
+            </div>
+
+            <div class="form-container">
+                <h1>Создать новый чат</h1>
+                <form action="/chats/" method="post">
+                    <label for="name">Название чата:</label>
+                    <input type="text" id="name" name="name" required>
+                    <button type="submit">Создать новый чат</button>
+                </form>
+            </div>
+
+            {% if message %}
+                <div class="message">{{ message }}</div>
+            {% endif %}
+        </div>
+
+        <div class="right-container">
+            <h1>Список чатов</h1>
+            <ul>
+            {% for item in chats %}
+                <li id="chat-{{ item.name }}">
+                    {{ item.name }}
+                    <button id="button1-{{ item.name }}" class="btn-chat" onclick="getTokenAndRedirect('{{item.name}}')">Войти в чат</button>
+                    <button id="button2-{{ item.name }}" class="btn-delete" onclick="deleteChat('{{ item.name }}')">Удалить</button>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

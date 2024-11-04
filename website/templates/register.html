@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .form-container {
+            background-color: white;
+            padding: 40px; /* Отступ со всех сторон */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px; /* Отступ после элемента */
+        }
+        label {
+            display: block; /* Отображение как блока, занимая всю ширину с новой строки */
+            margin-bottom: 8px;
+            color: #333;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .message_good {
+            color: green;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .message_bad {
+            color: red;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Регистрация</h1>
+        <form action="/register/" method="post">
+            <label for="email">Введите ваш email:</label>  <!-- Текстовая метка, описывающая поле ввода -->
+            <input type="email" id="email" name="email" placeholder="example@mail.com" required>  <!-- required - делает поле обязательным для ввода -->
+
+            <label for="password">Введите ваш пароль:</label>
+            <input type="password" id="password" name="password" placeholder="Введите пароль" required>
+
+            {% if message_good %}
+                <div class="message_good">{{ message_good }}</div>
+            {% endif %}
+
+            {% if message_bad %}
+                <div class="message_bad">{{ message_bad }}</div>
+            {% endif %}
+
+            <button type="submit">Создать аккаунт</button>
+        </form>
+    </div>
+</body>
+</html>
