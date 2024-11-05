@@ -12,8 +12,6 @@ engine = create_engine(DATABASE_URL)
 Base = declarative_base()
 
 # Создание нового экземпляра сессии для взаимодействий с БД
-# Без автоматической фиксации обновлений, без автоматического обновления данных в БД перед 
-# Также указываем созданное ранее подключение
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # Получение сессии базы данных

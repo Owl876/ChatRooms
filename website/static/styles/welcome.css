@@ -1,6 +1,6 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f4f8;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #e7f3ff; /* Светлый синий фон */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -10,27 +10,38 @@ body {
 
 .container {
     text-align: center;
+    padding: 20px; /* Добавлен отступ для контейнера */
+    border-radius: 15px; /* Закругленные углы для контейнера */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Тень для контейнера */
 }
 
 h1 {
-    color: #333;
+    color: #1a73e8; /* Синий цвет заголовка */
     margin-bottom: 30px;
 }
 
 a {
     text-decoration: none;
+    color: #1a73e8; /* Синий цвет ссылок */
+    transition: color 0.3s ease; /* Плавный переход для ссылки */
+}
+
+a:hover {
+    color: #005cbf; /* Темный синий при наведении на ссылку */
 }
 
 button {
-    background-color: #4CAF50;
+    background-color: #1a73e8; /* Синий фон кнопки */
     color: white;
     padding: 15px 30px;
     font-size: 18px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px; /* Закругленные углы для кнопок */
     margin: 10px;
+    cursor: pointer; /* Указатель при наведении */
+    transition: background-color 0.3s ease; /* Плавный переход для кнопки */
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #005cbf; /* Темный синий при наведении */
 }

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление чатами</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='styles/main.css') }}">
+</head>
+<body>
+<div class="logout-container">
+    <button class="logout-button" onclick="logout()">Выйти из аккаунта</button>
+</div>
+<div class="main-container">
+    <div class="left-container">
+        <div class="form-container">
+            <h1>Создать новый чат</h1>
+            <form action="/chats/" method="post">
+                <label for="name">Название чата:</label>
+                <input type="text" id="name" name="name" required>
+                <button type="submit">Создать новый чат</button>
+            </form>
+        </div>
+
+        {% if message %}
+        <div class="message">{{ message }}</div>
+        {% endif %}
+
+
+    </div>
+
+    <div class="right-container">
+        <div class="form-container">
+            <h1>Найти чат по названию</h1>
+            <label for="search">Поиск чата:</label>
+            <input type="text" id="search" name="query" placeholder="Введите название чата для поиска" required oninput="searchChats()">
+            <div id="results-container" class="results-container"></div> <!-- Контейнер для результатов поиска -->
+        </div>
+
+        <div class="form-container">
+            <h1>Список чатов</h1>
+            <ul class="chat-list">
+                {% for item in chats %}
+                <li id="chat-{{ item.name }}" class="chat-item">
+                    <span class="chat-name">{{ item.name }}</span>
+                    <button id="button1-{{ item.name }}" class="btn-chat" onclick="getTokenAndRedirect('{{item.name}}')">Войти в чат</button>
+                    <button id="button2-{{ item.name }}" class="btn-delete" onclick="deleteChat('{{ item.name }}')">Удалить</button>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', path='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,7 +1,10 @@
 from passlib.context import CryptContext
+from sqlalchemy.orm import Session
+from database import Users
+from auth import create_access_token
+import re
 
-# Объект контекста, указываем алгоритм хэширования bcrypt
-# Указываем, что если схема хэширования устареет, то она автоматически помечается как устаревшая
+# Используем алгоритм хэширования bcrypt
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # Функция для хэширования пароля
@@ -11,3 +14,30 @@ def get_password_hash(password: str) -> str:
 # Функция проверки, соответствует ли передаваемый пароль хэшированному паролю
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
+
+# Проверки при регистрации
+# Проверка корректности email по шаблону
+def is_valid_email(email: str) -> bool:
+    return bool(re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email))
+
+# Проверка, что все поля заполнены
+def are_fields_filled(user) -> bool:
+    return user.email is not None and user.password is not None
+
+# Проверка, существует ли пользователь в базе данных
+def is_user_exist(db: Session, email: str) -> bool:
+    return db.query(Users).filter(Users.email == email).first() is not None
+
+# Создание нового пользователя в базе данных
+def create_new_user(db: Session, email: str, password: str):
+    user_count = db.query(Users).count()
+    new_user = Users(id=user_count, email=email, password=get_password_hash(password))
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+# Функции для чата
+# Создает JWT токен с информацией о пользователе и чате.
+def generate_token_for_chat(user_email: str, chat_name: str):
+    token_data = {"email": user_email, "chat": chat_name}
+    return create_access_token(data=token_data)

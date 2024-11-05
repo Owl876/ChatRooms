@@ -4,66 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Регистрация</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f4f8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .form-container {
-            background-color: white;
-            padding: 40px; /* Отступ со всех сторон */
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px; /* Отступ после элемента */
-        }
-        label {
-            display: block; /* Отображение как блока, занимая всю ширину с новой строки */
-            margin-bottom: 8px;
-            color: #333;
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px;
-            font-size: 18px;
-            border: none;
-            border-radius: 5px;
-            width: 100%;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .message_good {
-            color: green;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .message_bad {
-            color: red;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='styles/auth.css') }}">
 </head>
 <body>
     <div class="form-container">
@@ -77,6 +18,9 @@
 
             {% if message_good %}
                 <div class="message_good">{{ message_good }}</div>
+                <a href="/authorizate/" style="text-decoration: none;">
+                    <button type="button" class="button">Перейти на страницу авторизации</button>
+                </a>
             {% endif %}
 
             {% if message_bad %}
