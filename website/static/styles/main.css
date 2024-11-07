@@ -33,6 +33,10 @@ body {
     overflow-y: auto;
 }
 
+.left-container {
+    max-height: 300px;
+}
+
 .form-container {
     margin-bottom: 20px;
     padding: 20px;

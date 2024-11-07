@@ -1,13 +1,12 @@
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 from database import Users
-from auth import create_access_token
+from auth import generate_access_token
 import re
 
-# Используем алгоритм хэширования bcrypt
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# Функция для хэширования пароля
+# Функция для хеширования пароля
 def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
 
@@ -15,7 +14,6 @@ def get_password_hash(password: str) -> str:
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
-# Проверки при регистрации
 # Проверка корректности email по шаблону
 def is_valid_email(email: str) -> bool:
     return bool(re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email))
@@ -36,8 +34,7 @@ def create_new_user(db: Session, email: str, password: str):
     db.commit()
     db.refresh(new_user)
 
-# Функции для чата
-# Создает JWT токен с информацией о пользователе и чате.
+# Создание JWT токена с информацией о пользователе и чате.
 def generate_token_for_chat(user_email: str, chat_name: str):
     token_data = {"email": user_email, "chat": chat_name}
-    return create_access_token(data=token_data)
+    return generate_access_token(data=token_data)

@@ -3,12 +3,11 @@ from typing import Optional
 
 # Модель пользователя при регистрации
 class UserRegister(BaseModel):
-    # Передаваемые значения либо строки, либо None
     email: Optional[str] = None 
     password: Optional[str] = None
 
 # Модель пользователя при авторизации
-class UserAuthorizate(BaseModel):
+class UserAuthorization(BaseModel):
     email: Optional[str] = None 
     password: Optional[str] = None
 
