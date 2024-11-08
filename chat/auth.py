@@ -1,39 +1,38 @@
 from fastapi import HTTPException, status
 from jose import JWTError, jwt
+from typing import Optional
 
-# Секретный ключ для JWT шифрования
-SECRET_KEY = "very_very_secret_key"
+# Конфигурация для JWT
+SECRET_KEY = "donut_loves_AC/DC"
 ALGORITHM = "HS256"
 
-# Функция для получения email пользователя или названия чата из токена 
-def get_current_item(token: str, type_return: str) -> str:
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Ошибка проверки подленности пользователя",
-        headers={"Authorization": "Bearer"},
-    )
+# Исключение для неверных учетных данных
+credentials_exception = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="Ошибка проверки подлинности пользователя",
+    headers={"WWW-Authenticate": "Bearer"},
+)
 
-    if token is None:
+# Функция для извлечения email или названия чата из токена
+def get_current_item(token: str, return_type: str) -> Optional[str]:
+    if not token:
         raise credentials_exception
-    
+
     try:
+        # Декодирование токена
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        # Получаем email из токена
-        email: str = payload.get("email")
-        if email is None:
+
+        # Извлечение данных из токена
+        email = payload.get("email")
+        chat = payload.get("chat")
+
+        # Проверка наличия данных в токене
+        if return_type == "email" and email:
+            return email
+        elif return_type == "chat" and chat:
+            return chat
+        else:
             raise credentials_exception
-        # Получаем название чата из токена
-        chat: str = payload.get("chat")
-        if chat is None:
-            raise credentials_exception
-        
+
     except JWTError:
         raise credentials_exception
-    
-    # В зависимости от второго аргумента функции возвращаем либо email, либо название чата
-    if (type_return == "email"):
-        return email
-    elif (type_return == "chat"):
-        return chat
-    else:
-        return None

@@ -12,7 +12,7 @@ async function getTokenAndRedirect(chatName) {
         if (response.ok) {
             const token = data.access_token;
             localStorage.setItem("token", token);
-            window.location.href = "/meeting_room/";
+            window.location.href = "/chat/";
         } else {
             console.error('Error getting token:', data.detail);
         }

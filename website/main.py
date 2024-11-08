@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from starlette.staticfiles import StaticFiles
-from database import engine, Base, get_db, Users, Chats
+from database import engine, Base, get_db, Users, Chats, reset_id_sequence
 from schema import UserAuthorization, Token, ChatRequest, LogoutMessage
 from exceptions import verify_password, is_valid_email, is_user_exist, generate_token_for_chat, create_new_user
 from auth import generate_access_token, get_current_user, is_user_authenticated
@@ -85,7 +85,8 @@ async def chats(request: Request, db: Session = Depends(get_db), current_user: U
             return RedirectResponse(url="/chats/?message_type=2", status_code=303)
 
         # Создание нового чата
-        new_chat = Chats(id=db.query(Chats).count(), name=name, owner=current_user.email)
+        reset_id_sequence(db, 'chats')
+        new_chat = Chats(name=name, owner=current_user.email)
         db.add(new_chat)
         db.commit()
         db.refresh(new_chat)
@@ -131,8 +132,8 @@ async def search_chats(query: str = Query(...), db: Session = Depends(get_db)):
     return JSONResponse(content={"chats": chat_list})
 
 # Отображение страницы чата
-@app.get("/meeting_room/", response_class=HTMLResponse)
-def meeting_room(request: Request):
+@app.get("/chat/", response_class=HTMLResponse)
+def chat(request: Request):
     return templates.TemplateResponse("chat.html", {"request": request})
 
 # Выход из аккаунта и очистка сессии

@@ -5,9 +5,9 @@ from database import Users, get_db
 from jose import JWTError, jwt
 
 # Конфигурация JWT
-SECRET_KEY = "very_very_secret_key"
+SECRET_KEY = "donut_loves_AC/DC"
 ALGORITHM = "HS256"
-TOKEN_LIFETIME_MINUTES = 240
+TOKEN_LIFETIME_MINUTES = 180
 
 # Генерация JWT токена
 def generate_access_token(data: dict, expiry: timedelta = None) -> str:

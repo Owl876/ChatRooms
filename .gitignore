@@ -1,6 +1,7 @@
-__pycache__/
+.idea
 *.pyc
 *.pyo
 *.log
 .env
+.iml
 db/dump

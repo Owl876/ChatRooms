@@ -16,7 +16,7 @@
             <h1>Создать новый чат</h1>
             <form action="/chats/" method="post">
                 <label for="name">Название чата:</label>
-                <input type="text" id="name" name="name" required>
+                <input type="text" id="name" name="name" placeholder="Введите название чата (больше 6 символов)" required>
                 <button type="submit">Создать новый чат</button>
             </form>
         </div>
@@ -33,7 +33,7 @@
             <h1>Найти чат по названию</h1>
             <label for="search">Поиск чата:</label>
             <input type="text" id="search" name="query" placeholder="Введите название чата для поиска" required oninput="searchChats()">
-            <div id="results-container" class="results-container"></div> <!-- Контейнер для результатов поиска -->
+            <div id="results-container" class="results-container"></div>
         </div>
 
         <div class="form-container">
