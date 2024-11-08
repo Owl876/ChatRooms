@@ -35,3 +35,12 @@ button {
 button:hover {
     background-color: #005cbf; /* Темный синий при наведении */
 }
+
+a {
+    text-decoration: none;
+    color: #1a73e8; /* Синий цвет ссылок */
+    transition: color 0.3s ease; /* Плавный переход для ссылки */
+}
+a:hover {
+    color: #005cbf; /* Темный синий при наведении на ссылку */
+}
