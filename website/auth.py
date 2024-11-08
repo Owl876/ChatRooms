@@ -18,7 +18,7 @@ def generate_access_token(data: dict, expiry: timedelta = None) -> str:
 
     return jwt.encode(data_to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
-# Возвращает текущего авторизованного пользователя, используя JWT токен из сессии.
+# Возвращаем текущего авторизованного пользователя, используя JWT токен из сессии
 def get_current_user(request: Request, db: Session = Depends(get_db)) -> Users:
 
     token = request.session.get('token')
@@ -45,7 +45,7 @@ def get_current_user(request: Request, db: Session = Depends(get_db)) -> Users:
 
     return user
 
-# Проверяет, авторизован ли пользователь, расшифровывая JWT токен из сессии.
+# Проверяем, авторизован ли пользователь, расшифровывая JWT токен из сессии
 def is_user_authenticated(request: Request, db: Session = Depends(get_db)) -> bool:
 
     token = request.session.get('token')
@@ -61,7 +61,7 @@ def is_user_authenticated(request: Request, db: Session = Depends(get_db)) -> bo
     except JWTError:
         return False
 
-# Извлекает данные (email пользователя или название чата) из JWT токена.
+# Извлекаем данные (email пользователя или название чата) из JWT токена
 def get_current_item(token: str, return_type: str, db: Session = Depends(get_db)) -> str:
     auth_error = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,

@@ -11,8 +11,7 @@
         <h1>Авторизация</h1>
 
         {% if not message_yes %}  <!-- Проверяем, не авторизован ли пользователь -->
-        <!-- Форма для отправки данных на сервер по маршруту /authorizate/ методом POST -->
-        <form action="/authorizate/" method="post">
+        <form action="/authorization/" method="post">
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" placeholder="Введите email пользователя" required>
 
@@ -21,7 +20,7 @@
 
             <button type="submit">Войти</button>
         </form>
-        {% endif %} <!-- Конец проверки авторизации -->
+        {% endif %}
 
         {% if message_yes %}
         <div class="message-good">{{ message_good }}</div>
@@ -29,10 +28,6 @@
             <button>Перейти к чатам</button>
         </a>
         <button class="logout-button" onclick="logout()">Выйти из аккаунта</button>
-        {% endif %}
-
-        {% if message_no %}
-        <div class="message_bad">{{ message_bad }}</div>
         {% endif %}
     </div>
     <script src="{{ url_for('static', path='js/auth.js') }}"></script>

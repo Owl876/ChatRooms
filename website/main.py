@@ -21,8 +21,8 @@ app.add_middleware(SessionMiddleware, secret_key="your_secret_key")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-@app.api_route("/register/", methods=["GET", "POST"], response_class=HTMLResponse)
-async def register(request: Request, db: Session = Depends(get_db), email: str = Form(None), password: str = Form(None)):
+@app.api_route("/registration/", methods=["GET", "POST"], response_class=HTMLResponse)
+async def registration(request: Request, db: Session = Depends(get_db), email: str = Form(None), password: str = Form(None)):
 
     if request.method == "POST":
         # Проверка корректности email
@@ -45,7 +45,7 @@ async def register(request: Request, db: Session = Depends(get_db), email: str =
     return templates.TemplateResponse("registration.html", {"request": request})
 
 
-@app.api_route("/authorizate/", methods=["GET", "POST"], response_class=HTMLResponse)
+@app.api_route("/authorization/", methods=["GET", "POST"], response_class=HTMLResponse)
 async def authorization(request: Request, db: Session = Depends(get_db), email: str = Form(None), password: str = Form(None), is_authorizate: bool = Depends(is_user_authenticated)):
 
     # Обработка GET-запроса
@@ -95,7 +95,7 @@ async def chats(request: Request, db: Session = Depends(get_db), current_user: U
     # Обработка GET-запроса (отображение списка чатов)
     chats = db.query(Chats).filter(Chats.owner == current_user.email).all()
     message = messages.get(message_type)
-    return templates.TemplateResponse("main.html", {"request": request, "chats": chats, "message": message})
+    return templates.TemplateResponse("main.html", {"request": request, "chats": chats, "message": message, "message_type": message_type})
 
 # Удаление чата пользователя по его названию
 @app.delete("/chats/{chatName}", response_class=RedirectResponse)

@@ -1,4 +1,4 @@
-const socket = new WebSocket(`ws://127.1.1.1/ws/chat/`);
+const socket = new WebSocket(`ws://127.0.0.1/ws/chat/`);
 const token = localStorage.getItem("token");
 
 // При открытии соединения

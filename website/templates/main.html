@@ -22,10 +22,10 @@
         </div>
 
         {% if message %}
-        <div class="message">{{ message }}</div>
+        <div class="message {% if message_type == '3' %} message_good{% else %}message_bad{% endif %}">
+            {{ message }}
+        </div>
         {% endif %}
-
-
     </div>
 
     <div class="right-container">

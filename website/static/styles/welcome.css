@@ -20,16 +20,6 @@ h1 {
     margin-bottom: 30px;
 }
 
-a {
-    text-decoration: none;
-    color: #1a73e8; /* Синий цвет ссылок */
-    transition: color 0.3s ease; /* Плавный переход для ссылки */
-}
-
-a:hover {
-    color: #005cbf; /* Темный синий при наведении на ссылку */
-}
-
 button {
     background-color: #1a73e8; /* Синий фон кнопки */
     color: white;

@@ -48,8 +48,8 @@ async def authenticate_user(websocket: WebSocket, token: str) -> Optional[Tuple[
         await websocket.send_text("Ошибка: не удалось подключиться")
         return None
 
+# Аутентифицируем пользователя и обновляем его соединение с чатом
 async def handle_authentication(websocket: WebSocket, token: str) -> Optional[str]:
-    """Аутентифицирует пользователя и обновляет его соединение с чатом."""
     user_data = await authenticate_user(websocket, token)
     if user_data:
         user, chat = user_data
@@ -58,8 +58,8 @@ async def handle_authentication(websocket: WebSocket, token: str) -> Optional[st
         return chat
     return None
 
+# Отправляем сообщение от пользователя в указанный чат
 async def handle_message(websocket: WebSocket, chat: str, user: str, message: str):
-    """Отправляет сообщение от пользователя в указанный чат."""
     if chat:
         await manager.send_message_to_chat(chat, f"{user} сказал: {message}")
     else:

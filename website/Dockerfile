@@ -9,3 +9,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 CMD ["sh", "-c", "sleep 10 && uvicorn main:app --host 0.0.0.0 --port 8000"]
+# sleep 10 необходим для первого запуска, чтобы успеть полностью поднять базу данных
+# в дальнейшем можно использовать следующий вариант:
+# CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

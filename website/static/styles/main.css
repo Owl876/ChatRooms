@@ -124,8 +124,15 @@ li {
 
 .message {
     text-align: center;
-    color: red;
     margin-bottom: 20px;
+}
+
+.message_bad {
+    color: red;
+}
+
+.message_good {
+    color: green;
 }
 
 .logout-container {

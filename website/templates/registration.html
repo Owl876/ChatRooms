@@ -9,16 +9,16 @@
 <body>
     <div class="form-container">
         <h1>Регистрация</h1>
-        <form action="/register/" method="post">
-            <label for="email">Введите ваш email:</label>  <!-- Текстовая метка, описывающая поле ввода -->
-            <input type="email" id="email" name="email" placeholder="example@mail.com" required>  <!-- required - делает поле обязательным для ввода -->
+        <form action="/registration/" method="post">
+            <label for="email">Введите ваш email:</label>
+            <input type="email" id="email" name="email" placeholder="example@mail.com" required>
 
             <label for="password">Введите ваш пароль:</label>
             <input type="password" id="password" name="password" placeholder="Введите пароль" required>
 
             {% if message_good %}
                 <div class="message_good">{{ message_good }}</div>
-                <a href="/authorizate/" style="text-decoration: none;">
+                <a href="/authorization/" style="text-decoration: none;">
                     <button type="button" class="button">Перейти на страницу авторизации</button>
                 </a>
             {% endif %}
