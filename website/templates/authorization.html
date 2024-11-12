@@ -29,6 +29,10 @@
         </a>
         <button class="logout-button" onclick="logout()">Выйти из аккаунта</button>
         {% endif %}
+
+        {% if message_no %}
+        <div class="message-bad">{{ message_no }}</div>
+        {% endif %}
     </div>
     <script src="{{ url_for('static', path='js/auth.js') }}"></script>
 </body>

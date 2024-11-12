@@ -59,7 +59,7 @@ async def authorization(request: Request, db: Session = Depends(get_db), email: 
         form_data = UserAuthorization(email=email, password=password)
         user = db.query(Users).filter(Users.email == form_data.email).first()
         if not user or not verify_password(form_data.password, user.password):
-            return templates.TemplateResponse("authorization.html", {"request": request, "message_no": "Неверные данные"})
+            return templates.TemplateResponse("authorization.html", {"request": request, "message_no": "Неверные данные"}, status_code=401)
 
         access_token = generate_access_token(data={"email": user.email})
         request.session['token'] = access_token
