@@ -1,4 +1,9 @@
-const socket = new WebSocket(`ws://127.0.0.1/ws/chat/`);
+// Формируем URL динамически
+const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+const host = window.location.host; // Домен текущего хоста
+const socketUrl = `${protocol}//${host}/ws/chat/`;
+const socket = new WebSocket(socketUrl);
+
 const token = localStorage.getItem("token");
 
 // При открытии соединения

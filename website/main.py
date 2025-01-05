@@ -27,19 +27,36 @@ async def registration(request: Request, db: Session = Depends(get_db), email: s
     if request.method == "POST":
         # Проверка корректности email
         if not is_valid_email(email):
-            return templates.TemplateResponse("registration.html", {"request": request, "message_bad": "Email введен некорректно"})
+            return templates.TemplateResponse(
+                "registration.html",
+                {"request": request, "message_bad": "Email введен некорректно"}
+            )
 
         # Проверка заполненности полей
         if not email or not password:
-            return templates.TemplateResponse("registration.html", {"request": request, "message": "Ошибка ввода"})
+            return templates.TemplateResponse(
+                "registration.html",
+                {"request": request, "message": "Ошибка ввода"}
+            )
 
         # Проверка существования пользователя
         if is_user_exist(db, email):
-            return templates.TemplateResponse("registration.html", {"request": request, "message_bad": "Аккаунт с таким email уже существует"})
+            return templates.TemplateResponse(
+                "registration.html",
+                {"request": request, "message_bad": "Аккаунт с таким email уже существует"}
+            )
 
         # Создание нового пользователя
         create_new_user(db, email, password)
-        return templates.TemplateResponse("registration.html", {"request": request, "message_good": "Аккаунт успешно зарегистрирован"})
+
+        # Генерация JWT токена
+        access_token = generate_access_token(data={"email": email})
+
+        # Сохранение токена в сессии
+        request.session['token'] = access_token
+
+        # Перенаправление на защищенную страницу (например, список чатов)
+        return RedirectResponse(url="/chats/", status_code=303)
 
     # Обработка GET-запроса для отображения страницы регистрации
     return templates.TemplateResponse("registration.html", {"request": request})

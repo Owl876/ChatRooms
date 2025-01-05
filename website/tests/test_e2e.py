@@ -23,13 +23,13 @@ def test_registration_and_chat(driver):
     driver.find_element(By.XPATH, "//button[@type='submit']").click()
 
     # Авторизация
-    driver.find_element(By.LINK_TEXT, "Перейти на страницу авторизации").click()
-    driver.find_element(By.NAME, "email").send_keys(unique_email)
-    driver.find_element(By.NAME, "password").send_keys("password")
-    driver.find_element(By.XPATH, "//button[@type='submit']").click()
+    # driver.find_element(By.LINK_TEXT, "Перейти на страницу авторизации").click()
+    # driver.find_element(By.NAME, "email").send_keys(unique_email)
+    # driver.find_element(By.NAME, "password").send_keys("password")
+    # driver.find_element(By.XPATH, "//button[@type='submit']").click()
 
     # Создание чата
-    driver.find_element(By.LINK_TEXT, "Перейти к чатам").click()
+    # driver.find_element(By.LINK_TEXT, "Перейти к чатам").click()
     driver.find_element(By.NAME, "name").send_keys(chat_name)
     driver.find_element(By.XPATH, "//button[@type='submit']").click()
 
