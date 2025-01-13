@@ -48,14 +48,11 @@ async def registration(request: Request, db: Session = Depends(get_db), email: s
 
         # Создание нового пользователя
         create_new_user(db, email, password)
-
         # Генерация JWT токена
         access_token = generate_access_token(data={"email": email})
-
-        # Сохранение токена в сессии
         request.session['token'] = access_token
 
-        # Перенаправление на защищенную страницу (например, список чатов)
+        # Перенаправление на страницу
         return RedirectResponse(url="/chats/", status_code=303)
 
     # Обработка GET-запроса для отображения страницы регистрации
